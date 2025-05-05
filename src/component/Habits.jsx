@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 
 
-
-
-
 export const Habits = ({addTask, day, setDay}) => {
 
     const [habits, setHabits] = useState('')
@@ -29,7 +26,7 @@ export const Habits = ({addTask, day, setDay}) => {
         <form onSubmit={getHabits}>
             <div>
                 <input type="text" placeholder="Добавить привычку  🔍"  value={habits} onChange={(e) =>  setHabits(e.target.value)}/>
-                <button>Добавть привычку!</button>
+                <button>Добавить привычку!</button>
             </div>
         </form>
     );

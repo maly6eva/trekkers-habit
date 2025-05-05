@@ -9,8 +9,8 @@ const getNext7Days = () => {
         const date = new Date(now)
         date.setDate(now.getDate() + i)
         days.push({
-            day: date.toLocaleDateString('ru-Ru', {weekday: 'short'}),
-            date: date.getDate()
+            key: `${date.toLocaleDateString('ru-Ru', {weekday: 'short'})} ${date.getDate()}`,
+            label: `${date.toLocaleDateString('ru-Ru', {weekday: 'short'})} ${date.getDate()}`
         })
     }
     return days
@@ -22,15 +22,35 @@ function App() {
         const saved = localStorage.getItem('tasks')
         return saved ? JSON.parse(saved) : []
     })
+
+    const days = getNext7Days()
+
     const [day, setDay] = useState('')
 
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks))
     }, [tasks])
-    const days = getNext7Days()
 
     function addTask(task) {
-        setTasks((prevTasks) => [task, ...prevTasks])
+        const newTask = {
+            ...task,
+            days: { }
+        }
+        setTasks((prevTasks) => [newTask, ...prevTasks])
+    }
+
+    function toggleCheckbox(taskId, dayKey) {
+        setTasks((prev) =>
+        prev.map((task) =>
+        task.id === taskId
+        ? {
+            ...task,
+            days: {
+                ...task.days,
+                [dayKey]: !task.days?.[dayKey]
+            }
+            }
+            : task))
     }
 
     function removeTask(id) {
@@ -48,13 +68,18 @@ function App() {
                         <li className='day' key={t.id}>
                             <div className='task'>
                                 <p>{t.habits}</p>
-                                <section className="habits" value={day} onChange={(e) => setDay(e.target.value)}>
+                                <div className="habits" value={day} onChange={(e) => setDay(e.target.value)}>
                                     {days.map((d, index) => (
-                                        <option key={index} value={`${d.day} ${d.date}`}>
-                                            {d.day} {d.date}
-                                        </option>
+                                        <label key={index}>
+
+                                            <input type='checkbox'
+                                            checked={t.days?.[d.key] || false}
+                                            onChange={() => toggleCheckbox(t.id, d.key)}/>
+                                            {d.label}
+                                        </label>
                                     ))}
-                                </section>
+
+                                </div>
                                 <div className='button'>
                                     <button onClick={() => removeTask(t.id)}>❌</button>
                                     <button>{`<7дн`}</button>
