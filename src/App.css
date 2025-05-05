@@ -40,3 +40,29 @@
 .read-the-docs {
   color: #888;
 }
+
+/*form{*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*}*/
+.habits{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.day {
+  list-style-type: none;
+}
+
+.task {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  gap: 0
+}
